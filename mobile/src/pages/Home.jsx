@@ -1,11 +1,14 @@
 import React from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { useHistory } from 'react-router-native';
 
 import { Button, Input } from 'react-native-elements';
 
 import { Formik } from 'formik';
 
 export default function Home() {
+  const history = useHistory();
+
   return (
     <View>
       <Formik initialValues={{
@@ -19,16 +22,19 @@ export default function Home() {
               onBlur={handleBlur('login')}
               value={values.login}
               placeholder="Логин"
-              securityTextEntry
+              label="Логин"
             />
             <Input
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
               placeholder="Пароль"
-              securityTextEntry
+              label="Пароль"
+              secureTextEntry
             />
-            <Button onPress={handleSubmit} title="Войти"/>
+            <Button onPress={handleSubmit} title="Войти" containerStyle={styles.button}/>
+            <Button title="Создать аккаунт" onPress={() => history.push('/register')}/>
+            <Button title="Скан" onPress={() => history.push('/scanner')}/>
           </View>
         )}
       </Formik>
@@ -36,4 +42,8 @@ export default function Home() {
   );
 }
 
-
+const styles = StyleSheet.create({
+  button: {
+    marginBottom: 20,
+  }
+});

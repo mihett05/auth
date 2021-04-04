@@ -1,17 +1,22 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView, Response
-from rest_framework.generics import CreateAPIView
 
 from .models import Scanner
 from .serializers import ScannerSerializer, TokenSerializer
 from .signals import command_open
 
 
-class CreateScanner(CreateAPIView):
-    queryset = Scanner.objects.all()
-    serializer_class = ScannerSerializer
-
+class CreateScanner(APIView):
     permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = ScannerSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        scanner = serializer.save()
+        scanner.set_password(serializer.validated_data["password"])
+        scanner.save()
+
+        return Response(dict(), status=201)
 
 
 class ScanToken(APIView):

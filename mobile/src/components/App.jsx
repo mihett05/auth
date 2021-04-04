@@ -1,27 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { NativeRouter, Route, Link } from 'react-router-native';
-
-import { ThemeProvider, Header } from 'react-native-elements';
+import React from 'react';
+import { NativeRouter, Route } from 'react-router-native';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { StatusBar } from 'expo-status-bar';
-import AppLoading from 'expo-app-loading';
+import Layout from './Layout';
 
 import Home from '../pages/Home';
-
+import Scanner from '../pages/Scanner';
 
 
 export default function App() {
   return (
     <SafeAreaProvider>
       <NativeRouter>
-        <ThemeProvider>
-          <Header centerComponent={{ text: 'Вход', style: { color: '#fff' } }}/>
-
+        <Layout>
           <Route exact path="/" component={Home} />
-          <StatusBar style="auto" />
-        </ThemeProvider>
+          <Route path="/scanner" component={Scanner} />
+        </Layout>
       </NativeRouter>
     </SafeAreaProvider>
   );

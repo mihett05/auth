@@ -8,9 +8,9 @@ from .models import Scanner
 class ScannerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Scanner
-        fields = ["username"]
+        fields = ["uuid", "password"]
         read_only_fields = ["id"]
-        write_only_fields = ["password"]
+        extra_kwargs = {"password": {"write_only": True}}
 
 
 class Token:

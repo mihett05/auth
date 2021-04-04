@@ -54,14 +54,19 @@ class ScannerConsumer(AsyncJsonWebsocketConsumer):
             })
         elif content["type"] == "login":
             msg = LoginMessage(**content)
-            scanner = get_scanner(msg.data.uuid, msg.data.password)
-            if not scanner or bool(await self.redis().get(msg.data.uuid)):
+            scanner = await get_scanner(msg.data.uuid, msg.data.password)
+            if not scanner:
                 await self.send_model(Response(
                     type="login",
                     error="Can't login with provided credentials"
                 ))
+            elif bool(await self.redis().get(msg.data.uuid)):
+                await self.send_model(Response(
+                    type="login",
+                    error="Scanner is active"
+                ))
             else:
-                await self.redis().set(msg.data.uuid, True)
+                await self.redis().set(msg.data.uuid, 1)
                 self.uuid = msg.data.uuid
                 await self.send_model(Response(
                     type="login",

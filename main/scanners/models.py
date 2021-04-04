@@ -7,7 +7,7 @@ class ScannerManager(BaseUserManager):
         if not uuid:
             raise ValueError("UUID must be set")
         uuid = uuid.strip().lower()
-
+        print(uuid, password, extra)
         user = self.model(uuid=uuid, **extra)
         user.set_password(password)
         user.save()
